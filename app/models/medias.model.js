@@ -21,6 +21,9 @@ const Medias = sequelize.define('Medias', {
     release_year: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        validate: {
+            min: 1939
+        }
     },
 
     creator: {

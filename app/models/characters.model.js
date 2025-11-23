@@ -21,7 +21,7 @@ const Characters = sequelize.define('Characters', {
 
 
     first_appearance: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(50),
       allowNull: true,
     },
 
@@ -50,7 +50,11 @@ const Characters = sequelize.define('Characters', {
   
   {
     tableName: "Characters",
-    timestamps: false,
+    indexes: [
+      {
+        fields: ['name'] // Index per name
+      }
+    ]
   }
 );
 

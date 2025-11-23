@@ -3,7 +3,7 @@ const sequelize = require('../config/db');
 const Characters = require('./characters.model');
 const Bat_Equipments = require('./bat_equipments.model');
 
-const Bat_Equipments = sequelize.define('Bat_Equipments', {
+const Character_Bat_Equipments = sequelize.define('Character_Bat_Equipments', {
    bat_equipment_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -28,15 +28,15 @@ const Bat_Equipments = sequelize.define('Bat_Equipments', {
   },
   
   {
-    tableName: "Bat_Equipments",
+    tableName: "Character_Bat_Equipments",
     timestamps: false,
   }
 );
 
-Characters.hasMany(Bat_Equipments, { foreignKey: "character_id" });
-Bat_Equipments.belongsTo(Characters, { foreignKey: "character_id" });
+Characters.hasMany(Character_Bat_Equipments, { foreignKey: "character_id" });
+Character_Bat_Equipments.belongsTo(Characters, { foreignKey: "character_id" });
 
-Bat_Equipments.hasMany(Bat_Equipments, { foreignKey: "bat_equipment_id" });
-Bat_Equipments.belongsTo(Bat_Equipments, { foreignKey: "bat_equipment_id" });
+Bat_Equipments.hasMany(Character_Bat_Equipments, { foreignKey: "bat_equipment_id" });
+Character_Bat_Equipments.belongsTo(Bat_Equipments, { foreignKey: "bat_equipment_id" });
 
-module.exports = Bat_Equipments;
+module.exports = Character_Bat_Equipments;

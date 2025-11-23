@@ -3,7 +3,7 @@ const sequelize = require('../config/db');
 const Characters = require('./characters.model');
 const Medias = require('./medias.model');
 
-const Medias = sequelize.define('Medias', {
+const Character_Medias = sequelize.define('Character_Medias', {
    media_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -28,15 +28,15 @@ const Medias = sequelize.define('Medias', {
   },
   
   {
-    tableName: "Medias",
+    tableName: "Character_Medias",
     timestamps: false,
   }
 );
 
-Characters.hasMany(Medias, { foreignKey: "character_id" });
-Medias.belongsTo(Characters, { foreignKey: "character_id" });
+Characters.hasMany(Character_Medias, { foreignKey: "character_id" });
+Character_Medias.belongsTo(Characters, { foreignKey: "character_id" });
 
-Medias.hasMany(Medias, { foreignKey: "media_id" });
-Medias.belongsTo(Medias, { foreignKey: "media_id" });
+Medias.hasMany(Character_Medias, { foreignKey: "media_id" });
+Character_Medias.belongsTo(Medias, { foreignKey: "media_id" });
 
-module.exports = Medias;
+module.exports = Character_Medias;

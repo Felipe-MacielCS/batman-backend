@@ -1,6 +1,20 @@
 const sequelize = require('./db');
-//const User = require('../models/user')
-
+require('../models/characters.model');
+require('../models/bat_family.model');
+require('../models/teams.model');
+require('../models/character_teams.model');
+require('../models/supporting.model');
+require('../models/character_aliases.model');
+require('../models/medias.model');
+require('../models/character_medias.model');
+require('../models/bat_weapons.model');
+require('../models/character_bat_weapons.model');
+require('../models/bat_vehicles.model');
+require('../models/character_bat_vehicles.model');
+require('../models/bat_equipments.model');
+require('../models/character_bat_equipments.model');
+require('../models/places.model');
+require('../models/character_places.model');
 
 (async () => {
     try{

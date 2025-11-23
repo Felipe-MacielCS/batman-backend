@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Felipe-MacielCS/batman-backend#readme",
   "dependencies": {
+    "mysql2": "^3.15.3",
     "sequelize": "^6.37.7"
   }
 }

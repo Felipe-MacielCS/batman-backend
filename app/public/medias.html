@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Medias</title>
+
+  <link rel="stylesheet" href="styles/index.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+
+</head>
+
+<body>
+
+  <div id="navbar"></div>
+  <script>
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => document.getElementById("navbar").innerHTML = html);
+  </script>
+
+  <h1>Medias</h1>
+
+  <div class="container">
+
+    <div class="table-container">
+      <table id="medias-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Release Year</th>
+            <th>Creator</th>
+            <th>Description</th>
+            <th>Members</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+
+    <div style="display: flex; flex-direction: column; gap: 25px; width: 30%;">
+
+
+      <div class="form-container">
+        <h2>Assign Character to Media</h2>
+
+        <form id="assign-form">
+          <label>Media:</label>
+          <select id="media_id" required></select>
+
+          <label>Character:</label>
+          <select id="character_id" required></select>
+
+          <button type="submit">Assign Character</button>
+        </form>
+      </div>
+
+
+      <div class="form-container">
+        <h2>Add New Media</h2>
+
+        <form id="media-form">
+          <label>Title:</label>
+          <input type="text" id="title" required>
+
+          <label>Type:</label>
+          <input type="text" id="type" required>
+
+          <label>Release Year:</label>
+          <input type="text" id="release_year" required>
+
+          <label>Creator:</label>
+          <input type="text" id="creator" required>
+
+          <label>Description:</label>
+          <input type="text" id="description" required>
+
+          <button type="submit">+ Add Media</button>
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="medias.js"></script>
+
+</body>
+</html>

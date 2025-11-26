@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Places</title>
+
+  <link rel="stylesheet" href="styles/index.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+
+</head>
+
+<body>
+
+  <div id="navbar"></div>
+  <script>
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => document.getElementById("navbar").innerHTML = html);
+  </script>
+
+  <h1>Places</h1>
+
+  <div class="container">
+
+    <div class="table-container">
+      <table id="places-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Place Name</th>
+            <th>Description</th>
+            <th>Characters</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+
+    <div style="display: flex; flex-direction: column; gap: 25px; width: 30%;">
+
+
+      <div class="form-container">
+        <h2>Assign Character to Place</h2>
+
+        <form id="assign-form">
+          <label>Place:</label>
+          <select id="place_id" required></select>
+
+          <label>Character:</label>
+          <select id="character_id" required></select>
+
+          <button type="submit">Assign Character</button>
+        </form>
+      </div>
+
+
+      <div class="form-container">
+        <h2>Add New Place</h2>
+
+        <form id="place-form">
+          <label>Place Name:</label>
+          <input type="text" id="place_name" required>
+
+          <label>Description:</label>
+          <input type="text" id="place_description" required>
+
+          <button type="submit">+ Add Place</button>
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="places.js"></script>
+
+</body>
+</html>

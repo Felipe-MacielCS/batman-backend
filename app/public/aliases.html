@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Aliases</title>
+
+  <link rel="stylesheet" href="styles/index.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+
+</head>
+
+<body>
+
+  <div id="navbar"></div>
+
+  <script>
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => document.getElementById("navbar").innerHTML = html);
+  </script>
+
+  <h1>Aliases</h1>
+
+  <div class="container">
+
+    <div class="table-container">
+      <table id="aliases-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Character</th>
+            <th>Alias</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    
+    <div class="form-container">
+      <h2>Add Alias</h2>
+
+      <form id="aliases-form">
+
+        <label>Character:</label>
+        <select id="character_id" required></select>
+
+        <label>Alias:</label>
+        <input type="text" id="alias_name" required>
+
+        <button type="submit">+ Add Alias</button>
+      </form>
+    </div>
+
+  </div>
+
+  <script src="aliases.js"></script>
+
+</body>
+</html>

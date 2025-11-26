@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Weapons</title>
+
+  <link rel="stylesheet" href="styles/index.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+
+</head>
+
+<body>
+
+  <div id="navbar"></div>
+  <script>
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => document.getElementById("navbar").innerHTML = html);
+  </script>
+
+  <h1>Weapons</h1>
+
+  <div class="container">
+
+    <div class="table-container">
+      <table id="bat_weapons-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Range</th>
+            <th>Members</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+
+    <div style="display: flex; flex-direction: column; gap: 25px; width: 30%;">
+
+
+      <div class="form-container">
+        <h2>Assign Character to Weapon</h2>
+
+        <form id="assign-form">
+          <label>Weapon:</label>
+          <select id="bat_weapon_id" required></select>
+
+          <label>Character:</label>
+          <select id="character_id" required></select>
+
+          <button type="submit">Assign Character</button>
+        </form>
+      </div>
+
+      <div class="form-container">
+        <h2>Add New Weapon</h2>
+
+        <form id="bat_weapon-form">
+          <label>Name:</label>
+          <input type="text" id="name" required>
+
+          <label>Description:</label>
+          <input type="text" id="description" required>
+
+          <label>Type:</label>
+          <input type="text" id="type" required>
+
+          <label>Range:</label>
+          <input type="text" id="range" required>
+
+          <button type="submit">+ Add Weapon</button>
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="bat_weapons.js"></script>
+
+</body>
+</html>

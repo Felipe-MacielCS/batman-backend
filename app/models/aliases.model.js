@@ -2,7 +2,7 @@ const {DataTypes} = require('sequelize');
 const sequelize = require('../config/db');
 const Characters = require('./characters.model');
 
-const Character_Aliases = sequelize.define('Character_Aliases', {
+const Aliases = sequelize.define('Aliases', {
     alias_id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -27,12 +27,12 @@ const Character_Aliases = sequelize.define('Character_Aliases', {
   },
   
   {
-    tableName: "Character_Aliases",
+    tableName: "Aliases",
     timestamps: false,
   }
 );
 
-Character_Aliases.belongsTo(Characters, { foreignKey: 'character_id' });
-Characters.hasMany(Character_Aliases, { foreignKey: 'character_id' });
+Aliases.belongsTo(Characters, { foreignKey: 'character_id' });
+Characters.hasMany(Aliases, { foreignKey: 'character_id' });
 
-module.exports = Character_Aliases;
+module.exports = Aliases;

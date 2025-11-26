@@ -13,7 +13,7 @@ const Bat_Equipments = sequelize.define('Bat_Equipments', {
         allowNull: false,
     },
 
-    description: {
+    purpose: {
         type: DataTypes.STRING(50),
         allowNull: false,
     },
@@ -23,10 +23,6 @@ const Bat_Equipments = sequelize.define('Bat_Equipments', {
         allowNull: false,
     },
 
-    range: {
-        type: DataTypes.STRING(50),
-        allowNull: false,
-    },
   },
   
   {

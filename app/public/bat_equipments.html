@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Equipments</title>
+
+  <link rel="stylesheet" href="styles/index.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+
+</head>
+
+<body>
+
+  <div id="navbar"></div>
+  <script>
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => document.getElementById("navbar").innerHTML = html);
+  </script>
+
+  <h1>Equipments</h1>
+
+  <div class="container">
+
+    <div class="table-container">
+      <table id="bat_equipments-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Purpose</th>
+            <th>Type</th>
+            <th>Members</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+
+    <div style="display: flex; flex-direction: column; gap: 25px; width: 30%;">
+
+
+      <div class="form-container">
+        <h2>Assign Character to Equipment</h2>
+
+        <form id="assign-form">
+          <label>Equipment:</label>
+          <select id="bat_equipment_id" required></select>
+
+          <label>Character:</label>
+          <select id="character_id" required></select>
+
+          <button type="submit">Assign Character</button>
+        </form>
+      </div>
+
+      <div class="form-container">
+        <h2>Add New Equipment</h2>
+
+        <form id="bat_equipment-form">
+          <label>Name:</label>
+          <input type="text" id="name" required>
+
+          <label>Purpose:</label>
+          <input type="text" id="purpose" required>
+
+          <label>Type:</label>
+          <input type="text" id="type" required>
+
+          <button type="submit">+ Add Equipment</button>
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="bat_equipments.js"></script>
+
+</body>
+</html>

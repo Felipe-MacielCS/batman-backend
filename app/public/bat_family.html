@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bat Family</title>
+
+  <link rel="stylesheet" href="styles/index.css">
+
+  <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+
+</head>
+
+<body>
+
+  <div id="navbar"></div>
+
+  <script>
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => document.getElementById("navbar").innerHTML = html);
+  </script>
+
+  <h1>Bat Family</h1>
+
+  <div class="container">
+
+    <div class="table-container">
+      <table id="batfamily-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Character</th>
+            <th>Relationship</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    
+    <div class="form-container">
+      <h2>Add Bat Family Member</h2>
+
+      <form id="batfamily-form">
+
+        <label>Character:</label>
+        <select id="character_id" required></select>
+
+        <label>Relationship:</label>
+        <input type="text" id="relationship" required>
+
+        <button type="submit">+ Add Bat Family</button>
+      </form>
+    </div>
+
+  </div>
+
+  <script src="bat_family.js"></script>
+
+</body>
+</html>

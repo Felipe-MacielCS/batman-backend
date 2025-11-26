@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Batman</title>
+
+  <link rel="stylesheet" href="styles/index.css">
+
+</head>
+
+<body>
+  <div id="navbar"></div>
+
+  <h1>Characters</h1>
+
+  <script>
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => document.getElementById("navbar").innerHTML = html);
+  </script>
+
+  <div id="characters-section" class="section active">
+    <div class="container">
+
+      <div class="table-container">
+        <table id="characters-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Real Name</th>
+              <th>First Appearance</th>
+              <th>Created By</th>
+              <th>Skills</th>
+              <th>Villain?</th>
+              <th>Anti-Hero?</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="form-container">
+        <h2>Add New Character</h2>
+
+        <form id="character-form">
+          <label>Name:</label>
+          <input type="text" id="name" required>
+
+          <label>Real Name:</label>
+          <input type="text" id="real_name" required>
+
+          <label>First Appearance:</label>
+          <input type="text" id="first_appearance">
+
+          <label>Created By:</label>
+          <input type="text" id="created_by" required>
+
+          <label>Skills:</label>
+          <input type="text" id="skills" required>
+
+          <label><input type="checkbox" id="isVillain"> Villain?</label>
+          <label><input type="checkbox" id="isAntiHero"> Anti-Hero?</label>
+
+          <button type="submit">+ Add Character</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="character.js" defer></script>
+
+</body>
+</html>

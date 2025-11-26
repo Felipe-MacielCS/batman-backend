@@ -4,7 +4,7 @@ require('../models/bat_family.model');
 require('../models/teams.model');
 require('../models/character_teams.model');
 require('../models/supporting.model');
-require('../models/character_aliases.model');
+require('../models/aliases.model');
 require('../models/medias.model');
 require('../models/character_medias.model');
 require('../models/bat_weapons.model');

@@ -13,20 +13,16 @@ const Bat_Vehicles = sequelize.define('Bat_Vehicles', {
         allowNull: false,
     },
 
-    description: {
-        type: DataTypes.STRING(50),
-        allowNull: false,
-    },
-
     type: {
         type: DataTypes.STRING(50),
         allowNull: false,
     },
 
-    range: {
+    description: {
         type: DataTypes.STRING(50),
         allowNull: false,
     },
+
   },
   
   {

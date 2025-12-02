@@ -48,12 +48,35 @@ async function loadTeams() {
     loadTeamDropdown();
 }
 
-function makeRowEditable(tr) {
+async function makeRowEditable(tr) {
+    const id = tr.dataset.id;
     const cells = tr.querySelectorAll("td");
     const [idCell, nameCell, descCell, charCell, actionCell] = cells;
 
     nameCell.innerHTML = `<input type="text" value="${nameCell.textContent}">`;
     descCell.innerHTML = `<input type="text" value="${descCell.textContent}">`;
+
+    const allCharsRes = await fetch(CHAR_API);
+    const allCharacters = await allCharsRes.json();
+
+    const teamCharsRes = await fetch(`${TEAMCHAR_API}/team/${id}`);
+    const teamCharacters = await teamCharsRes.json();
+
+    const currentIDs = new Set(teamCharacters.map(c => c.character_id));
+
+    let html = `<div class="char-checkboxes">`;
+    allCharacters.forEach(c => {
+        const checked = currentIDs.has(c.character_id) ? "checked" : "";
+        html += `
+            <label>
+                <input type="checkbox" value="${c.character_id}" ${checked}>
+                ${c.name}
+            </label><br>
+        `;
+    });
+    html += `</div>`;
+
+    charCell.innerHTML = html;
 
     actionCell.innerHTML = `
         <button class="save-btn">Save</button>
@@ -64,7 +87,20 @@ function makeRowEditable(tr) {
 
 async function saveRow(tr) {
     const id = tr.dataset.id;
-    const inputs = tr.querySelectorAll("input");
+    const inputs = tr.querySelectorAll("input[type='text']");
+    const checkboxes = tr.querySelectorAll(".char-checkboxes input[type='checkbox']");
+
+    const selected = [];
+    checkboxes.forEach(cb => {
+        if (cb.checked) selected.push(Number(cb.value));
+    });
+
+    const teamCharsRes = await fetch(`${TEAMCHAR_API}/team/${id}`);
+    const teamCharacters = await teamCharsRes.json();
+    const currentIDs = new Set(teamCharacters.map(c => c.character_id));
+
+    const toAdd = selected.filter(id => !currentIDs.has(id));
+    const toRemove = [...currentIDs].filter(id => !selected.includes(id));
 
     const body = {
         name: inputs[0].value,
@@ -77,9 +113,25 @@ async function saveRow(tr) {
         body: JSON.stringify(body)
     });
 
+    for (const charID of toAdd) {
+        await fetch(TEAMCHAR_API, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                team_id: id,
+                character_id: charID
+            })
+        });
+    }
+
+    for (const charID of toRemove) {
+        await fetch(`${TEAMCHAR_API}/${id}/${charID}`, {
+            method: "DELETE"
+        });
+    }
+
     loadTeams();
 }
-
 
 async function deleteTeam(id) {
     if (!confirm("Delete this team?")) return;

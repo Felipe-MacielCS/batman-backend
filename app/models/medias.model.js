@@ -22,7 +22,7 @@ const Medias = sequelize.define('Medias', {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-            min: 1939
+            min: 1939 // CHECK
         }
     },
 

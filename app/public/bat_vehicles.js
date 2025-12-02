@@ -50,13 +50,46 @@ async function loadVehicles() {
     loadBat_VehicleDropdown();
 }
 
-function makeRowEditable(tr) {
+async function makeRowEditable(tr) {
+    const id = tr.dataset.id;
     const cells = tr.querySelectorAll("td");
-    const [idCell, nameCell, typeCell, descriptionCell, charCell, actionCell] = cells;
+
+    const [
+        idCell,
+        nameCell,
+        typeCell,
+        descriptionCell,
+        charCell,
+        actionCell
+    ] = cells;
 
     nameCell.innerHTML = `<input type="text" value="${nameCell.textContent}">`;
     typeCell.innerHTML = `<input type="text" value="${typeCell.textContent}">`;
     descriptionCell.innerHTML = `<input type="text" value="${descriptionCell.textContent}">`;
+
+    const allCharsRes = await fetch(CHAR_API);
+    const allCharacters = await allCharsRes.json();
+
+    const vehicleCharsRes = await fetch(`${BAT_VEHICLESCHAR_API}/bat_vehicle/${id}`);
+    const vehicleCharacters = await vehicleCharsRes.json();
+
+    const currentIDs = new Set(vehicleCharacters.map(c => c.character_id));
+
+    let html = `<div class="char-checkboxes">`;
+
+    allCharacters.forEach(c => {
+        const checked = currentIDs.has(c.character_id) ? "checked" : "";
+        html += `
+            <label>
+                <input type="checkbox" value="${c.character_id}" ${checked}>
+                ${c.name}
+            </label><br>
+        `;
+    });
+
+    html += `</div>`;
+
+    charCell.innerHTML = html;
 
     actionCell.innerHTML = `
         <button class="save-btn">Save</button>
@@ -64,10 +97,22 @@ function makeRowEditable(tr) {
     `;
 }
 
-
 async function saveRow(tr) {
     const id = tr.dataset.id;
-    const inputs = tr.querySelectorAll("input");
+    const inputs = tr.querySelectorAll("input[type='text']");
+    const checkboxes = tr.querySelectorAll(".char-checkboxes input[type='checkbox']");
+
+    const selected = [];
+    checkboxes.forEach(cb => {
+        if (cb.checked) selected.push(Number(cb.value));
+    });
+
+    const vehCharsRes = await fetch(`${BAT_VEHICLESCHAR_API}/bat_vehicle/${id}`);
+    const vehCharacters = await vehCharsRes.json();
+    const currentIDs = new Set(vehCharacters.map(c => c.character_id));
+
+    const toAdd = selected.filter(charID => !currentIDs.has(charID));
+    const toRemove = [...currentIDs].filter(charID => !selected.includes(charID));
 
     const body = {
         name: inputs[0].value,
@@ -81,8 +126,26 @@ async function saveRow(tr) {
         body: JSON.stringify(body)
     });
 
+    for (const charID of toAdd) {
+        await fetch(BAT_VEHICLESCHAR_API, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                bat_vehicle_id: id,
+                character_id: charID
+            })
+        });
+    }
+
+    for (const charID of toRemove) {
+        await fetch(`${BAT_VEHICLESCHAR_API}/${id}/${charID}`, {
+            method: "DELETE"
+        });
+    }
+
     loadVehicles();
 }
+
 
 
 async function deleteBat_Vehicle(id) {

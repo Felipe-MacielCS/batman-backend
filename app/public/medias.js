@@ -53,7 +53,8 @@ async function loadMedias() {
     loadMediaDropdown();
 }
 
-function makeRowEditable(tr) {
+async function makeRowEditable(tr) {
+    const id = tr.dataset.id;
     const cells = tr.querySelectorAll("td");
 
     const [
@@ -73,15 +74,51 @@ function makeRowEditable(tr) {
     creatorCell.innerHTML = `<input type="text" value="${creatorCell.textContent}">`;
     descCell.innerHTML = `<input type="text" value="${descCell.textContent}">`;
 
+    const allCharsRes = await fetch(CHAR_API);
+    const allCharacters = await allCharsRes.json();
+
+    const mediaCharsRes = await fetch(`${MEDIASCHAR_API}/media/${id}`);
+    const mediaCharacters = await mediaCharsRes.json();
+
+    const currentIDs = new Set(mediaCharacters.map(c => c.character_id));
+
+    let html = `<div class="char-checkboxes">`;
+    allCharacters.forEach(c => {
+        const checked = currentIDs.has(c.character_id) ? "checked" : "";
+        html += `
+            <label>
+                <input type="checkbox" value="${c.character_id}" ${checked}>
+                ${c.name}
+            </label><br>
+        `;
+    });
+    html += `</div>`;
+
+    charCell.innerHTML = html;
+
     actionCell.innerHTML = `
         <button class="save-btn">Save</button>
         <button class="cancel-btn">Cancel</button>
     `;
 }
 
+
 async function saveRow(tr) {
     const id = tr.dataset.id;
-    const inputs = tr.querySelectorAll("input");
+    const inputs = tr.querySelectorAll("input[type='text']");
+    const checkboxes = tr.querySelectorAll(".char-checkboxes input[type='checkbox']");
+
+    const selected = [];
+    checkboxes.forEach(cb => {
+        if (cb.checked) selected.push(Number(cb.value));
+    });
+
+    const mediaCharsRes = await fetch(`${MEDIASCHAR_API}/media/${id}`);
+    const mediaCharacters = await mediaCharsRes.json();
+    const currentIDs = new Set(mediaCharacters.map(c => c.character_id));
+
+    const toAdd = selected.filter(id => !currentIDs.has(id));
+    const toRemove = [...currentIDs].filter(id => !selected.includes(id));
 
     const body = {
         title: inputs[0].value,
@@ -97,8 +134,27 @@ async function saveRow(tr) {
         body: JSON.stringify(body)
     });
 
+ 
+    for (const charID of toAdd) {
+        await fetch(MEDIASCHAR_API, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                media_id: id,
+                character_id: charID
+            })
+        });
+    }
+
+    for (const charID of toRemove) {
+        await fetch(`${MEDIASCHAR_API}/${id}/${charID}`, {
+            method: "DELETE"
+        });
+    }
+
     loadMedias();
 }
+
 
 async function deleteMedia(id) {
     if (!confirm("Delete this media?")) return;

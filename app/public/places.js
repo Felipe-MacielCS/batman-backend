@@ -48,12 +48,34 @@ async function loadPlaces() {
     loadPlaceDropdown();
 }
 
-function makeRowEditable(tr) {
+async function makeRowEditable(tr) {
+    const id = tr.dataset.id;
     const cells = tr.querySelectorAll("td");
     const [idCell, nameCell, descCell, charCell, actionCell] = cells;
 
     nameCell.innerHTML = `<input type="text" value="${nameCell.textContent}">`;
     descCell.innerHTML = `<input type="text" value="${descCell.textContent}">`;
+
+    const allCharsRes = await fetch(CHAR_API);
+    const allCharacters = await allCharsRes.json();
+
+    const placeCharsRes = await fetch(`${PLACESCHAR_API}/place/${id}`);
+    const placeCharacters = await placeCharsRes.json();
+    const currentIDs = new Set(placeCharacters.map(c => c.character_id));
+
+    let html = `<div class="char-checkboxes">`;
+    allCharacters.forEach(c => {
+        const checked = currentIDs.has(c.character_id) ? "checked" : "";
+        html += `
+            <label>
+                <input type="checkbox" value="${c.character_id}" ${checked}>
+                ${c.name}
+            </label><br>
+        `;
+    });
+    html += `</div>`;
+
+    charCell.innerHTML = html;
 
     actionCell.innerHTML = `
         <button class="save-btn">Save</button>
@@ -64,7 +86,20 @@ function makeRowEditable(tr) {
 
 async function saveRow(tr) {
     const id = tr.dataset.id;
-    const inputs = tr.querySelectorAll("input");
+    const inputs = tr.querySelectorAll("input[type='text']");
+    const checkboxes = tr.querySelectorAll(".char-checkboxes input[type='checkbox']");
+
+    const selected = [];
+    checkboxes.forEach(cb => {
+        if (cb.checked) selected.push(Number(cb.value));
+    });
+
+    const placeCharsRes = await fetch(`${PLACESCHAR_API}/place/${id}`);
+    const placeCharacters = await placeCharsRes.json();
+    const currentIDs = new Set(placeCharacters.map(c => c.character_id));
+
+    const toAdd = selected.filter(cid => !currentIDs.has(cid));
+    const toRemove = [...currentIDs].filter(cid => !selected.includes(cid));
 
     const body = {
         name: inputs[0].value,
@@ -76,6 +111,23 @@ async function saveRow(tr) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
     });
+
+    for (const charID of toAdd) {
+        await fetch(PLACESCHAR_API, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                place_id: id,
+                character_id: charID
+            })
+        });
+    }
+
+    for (const charID of toRemove) {
+        await fetch(`${PLACESCHAR_API}/${id}/${charID}`, {
+            method: "DELETE"
+        });
+    }
 
     loadPlaces();
 }
